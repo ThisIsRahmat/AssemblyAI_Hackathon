@@ -51,7 +51,7 @@ app.post('/generate-test', (req, res) => {
 
   const questions = generateQuestions(subject, topic, examBoard, style, qualification);
 
-  res.render('pages/quiz', questions);
+  res.render('pages/quiz', {questions});
 });
 
 async function generateQuestions(subject, topic, examBoard, style, qualification) {

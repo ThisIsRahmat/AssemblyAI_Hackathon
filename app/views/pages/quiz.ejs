@@ -11,16 +11,15 @@
 
 <main>
   <div class="jumbotron">
-    <h1>Generated Test</h1>
-    <!-- <% test.forEach(function(question) { %>
-      <p><%= question.question %></p>
-      <ul>
-        <% question.answers.forEach(function(answer) { %>
-          <li><%= answer %></li>
-        <% }); %>
-      </ul>
-    <% }); %> -->
-    
+    <h1 class="text-3xl font-bold text-center mb-4">Generated Test</h1>
+<div  class="max-w-md mx-auto m-4 p-4 bg-white rounded-lg shadow-md">
+  <% for (var i = 0; i < questions.length; i++) { %>
+    <h2>Question <%= i+1 %></h2>
+    <p><%= questions[i].question %></p>
+    <p>Answer: <%= questions[i].answer %></p>
+<% } %>
+</div>
+
   </div>
 </main>
 
