@@ -3,7 +3,7 @@
 <head>
   <%- include('../partials/head'); %>
 </head>
-<body class="container">
+<body>
 
 <header>
   <%- include('../partials/header'); %>
@@ -11,7 +11,7 @@
 
 <main>
   <div class="jumbotron">
-    <h1>Test Generator</h1>
+ 
     <form action="/generate-test" method="post" class="mx-auto max-w-md m-4 p-4 bg-white rounded-lg shadow-md" >
 
       <div class="mb-4"> 
@@ -22,23 +22,23 @@
         <option value="true/false">True/False</option>
         <option value="short answer">Short Answer</option>
       </select><br>
-      <label for="subject">Subject:</label><br>
-      <input type="text" id="subject" name="subject"><br>
-      <label for="topic">Chapter:</label><br>
-      <input type="text" id="topic" name="topic"><br>
-      <label for="examBoard">Exam Board:</label><br>
+      <label for="subject" class="block font-bold mb-2 text-gray-700">Subject:</label><br>
+      <input type="text" id="subject" name="subject" class="block w-full p-2 rounded-lg bg-gray-100"><br>
+      <label for="topic" class="block font-bold mb-2 text-gray-700">Topic</label><br>
+      <input type="text" id="topic" name="topic" class="block w-full p-2 rounded-lg bg-gray-100"> <br>
+      <label for="examBoard" class="block font-bold mb-2 text-gray-700">Exam Board:</label><br>
       <select id="exam_board" name="examBoard"  class="block w-full p-2 rounded-lg bg-gray-100">
         <option value="AQA">AQA</option>
         <option value="AQA">Edexcel</option>
         <option value="OCR">OCR</option>
         <option value="WJEC">WJEC</option>
       </select><br><br>
-      <label for="qualification">Qualification Level:</label><br>
+      <label for="qualification" class="block font-bold mb-2 text-gray-700">Qualification Level:</label><br>
       <select id="qualification" name="qualification"  class="block w-full p-2 rounded-lg bg-gray-100">
         <option value="A-Level">A-Level</option>
         <option value="GCSE">GCSE</option>
       </select><br><br>
-      <input type="submit" value="Generate Test Material">
+      <input type="submit" value="Generate Test Material" class="bg-blue-500 text-white px-4 py-2 rounded-lg w-full">
     </div>
     </form> 
   </div>
