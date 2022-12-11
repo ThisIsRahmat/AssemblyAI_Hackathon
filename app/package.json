@@ -1,0 +1,22 @@
+{
+  "name": "testhelper",
+  "version": "1.0.0",
+  "description": "An AI-based test and quizing platform ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ThisIsRahmat/AssemblyAI_Hackathon.git"
+  },
+  "author": "Rahmat Junaid",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThisIsRahmat/AssemblyAI_Hackathon/issues"
+  },
+  "homepage": "https://github.com/ThisIsRahmat/AssemblyAI_Hackathon#readme",
+  "dependencies": {
+    "chatgpt": "^2.0.6"
+  }
+}
