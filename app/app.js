@@ -1,32 +1,44 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const http = require("http");
+
+import { ChatGPTAPI } from 'chatgpt'
+import express from 'express';
+import compression from 'compression';
+import bodyParser from 'body-parser';
+import * as dotenv from 'dotenv'
+dotenv.config()
+// import { bodyParser } from 'bodyParser'
+// import { http } from 'http' 
+// const express = require('express');
+// const bodyParser = require('body-parser');
+// const http = require("http");
 
 const app = express();
-const port = 5000;
+const port = 6600;
+
+// const compression = require("compression");
+
 
 // set the view engine to ejs
 app.set('view engine', 'ejs');
 
-// Use body-parser to parse form data
+// // Use body-parser to parse form data
 app.use(bodyParser.urlencoded({ extended: true }));
 
-// index page
 
-app.get('/', function (req, res) {
-  res.render('pages/index'); 
-});
+  // index page
+  app.get('/', function (req, res) {
+    res.render('pages/index'); 
+  });
 
-// about page
-app.get('/about', function(req, res) {
-  res.render('pages/about');
-});
+  // about page
+  app.get('/about', function(req, res) {
+    res.render('pages/about');
+  });
 
-// Set up route for test generation form
-app.get('/generate-test', (req, res) => {
-  // Render form for generating test questions
-  res.render('pages/generate-test-questions');
-});
+  // Set up route for test generation form
+  app.get('/generate-test', (req, res) => {
+    // Render form for generating test questions
+    res.render('pages/generate-test-questions')
+  });
 
 // Handle form submission for generating test questions
 app.post('/generate-test', (req, res) => {
@@ -35,38 +47,42 @@ app.post('/generate-test', (req, res) => {
   const subject = req.body.subject;
   const topic = req.body.topic;
   const examBoard = req.body.examBoard;
+  const qualification = req.body.qualification;
 
-  // Use OpenAI to generate test questions based on user input
-  openai.completions.create(
-    {
-      engine: "text-davinci-002",
-      prompt: `${style} ${subject} ${topic} ${examBoard}`,
-      max_tokens: 1024,
-      n: 1,
-      stop: "",
-    },
-    function(error, response) {
-      if (error) throw error;
-      // Use generated test questions to create test
-      const test = createTest(response.choices[0].text);
-      // Render test in quizlet format
-      res.render('pages/quiz', { test: test });
-    }
-  );
+  const questions = generateQuestions(subject, topic, examBoard, style, qualification);
+
+  res.render('pages/quiz', questions);
 });
 
-// Function to create test from generated questions
-function createTest(questions) {
-  let test = "";
-  // Add each generated question to test
-  for (const question of questions) {
-    test += `${question}\n\n`;
-  }
-  return test;
-}
+async function generateQuestions(subject, topic, examBoard, style, qualification) {
+
+   // sessionToken is required; see below for details
+   const api = new ChatGPTAPI({
+    sessionToken: process.env.SESSION_TOKEN,
+    markdown: false
+  });
+
+  // ensure the API is properly authenticated
+  await api.ensureAuth()
+
+
+  // Use GPT-3 to generate exam-style questions
+  const response = await api.sendMessage(
+    
+    `Generate 5 ${style} questions for ${examBoard} ${qualification} ${subject} exam on the topic of ${topic}. Make sure to include answers for each question and make sure to generate answers for each question and include the appropriate number of marks per question. Return the results in a json format`
+  )
+  // const questions = response['questions']
+  // answers = questions[answer]
+
+  // Return the generated questions in a JSON object
+  return {
+    questions: response,
+    // answers: re
+  };
+};
 
 app.use((req, res, next) => {
-  res.status(400).render('pages/400');
+  res.status(400).render('pages/404');
 });
 
 app.use((err, req, res, next) => {
@@ -75,5 +91,6 @@ app.use((err, req, res, next) => {
 });
 
 app.listen(port, () => {
-  console.log('Test generator listening on port ' + port + '!');
-}); 
+  console.log(`Test generator listening on port  ${port}  !`);
+});
+
