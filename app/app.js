@@ -1,10 +1,13 @@
 
 import { ChatGPTAPI } from 'chatgpt'
-import express from 'express';
+import express, { response } from 'express';
 import compression from 'compression';
 import bodyParser from 'body-parser';
 import * as dotenv from 'dotenv'
 dotenv.config()
+import { Configuration, OpenAIApi } from "openai";
+
+// const openai = require("openai");
 // import { bodyParser } from 'bodyParser'
 // import { http } from 'http' 
 // const express = require('express');
@@ -49,37 +52,136 @@ app.post('/generate-test', (req, res) => {
   const examBoard = req.body.examBoard;
   const qualification = req.body.qualification;
 
-  const questions = generateQuestions(subject, topic, examBoard, style, qualification);
+  const questions = generateQuestions(subject,  examBoard, qualification, style, topic);
 
   res.render('pages/quiz', {questions});
 });
 
-async function generateQuestions(subject, topic, examBoard, style, qualification) {
-
-   // sessionToken is required; see below for details
-   const api = new ChatGPTAPI({
-    sessionToken: process.env.SESSION_TOKEN,
-    markdown: false
+async function generateQuestions(subject, examBoard, qualificationLevel, style, topic) {
+  // Use the OpenAI API to access GPT-3
+  
+  const configuration = new Configuration({
+    apiKey: process.env.OPENAI_API_KEY,
   });
 
-  // ensure the API is properly authenticated
-  await api.ensureAuth()
+  const openai = new OpenAIApi(configuration);
+
+  // Generate the questions and answers using GPT-3
+  const questions = [];
+  const answers = [];
+
+  // Use GPT-3 to generate the first question and answer
+  const question1Prompt = `Generate a ${style} ${subject} question for a ${qualificationLevel} ${examBoard} exam on the topic of ${topic}. {}`;
+  const question1Result = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `\n\nQ: ${question1Prompt}\nA:`,
+    model: "text-davinci-003",
+    temperature: 0.5,
+    max_tokens: 150,
+    top_p: 1.0,
+    frequency_penalty: 0.0,
+    presence_penalty: 0.0,
+    stop: ["{}"],
 
 
-  // Use GPT-3 to generate exam-style questions
-  const response = await api.sendMessage(
-    
-    `Generate 5 ${style} questions for ${examBoard} ${qualification} ${subject} exam on the topic of ${topic}. Make sure to include answers for each question and make sure to generate answers for each question and include the appropriate number of marks per question. Return the results in a json format`
-  )
-  // const questions = response['questions']
-  // answers = questions[answer]
-
-  // Return the generated questions in a JSON object
-  return {
-    questions: response,
-    // answers: re
+  });
+  const question1 = {
+    question: question1Result.data.choices[0].text
   };
-};
+  questions.push(question1);
+  answers.push(question1Result.data.choices[0].text.split("\n")[1]);
+
+  // Use GPT-3 to generate the second question and answer
+  const question2Prompt = `Generate a ${style} ${subject} question for a ${qualificationLevel} ${examBoard} exam on the topic of ${topic}. {}`;
+  const question2Result = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `\n\nQ: ${question1Prompt}\nA:`,
+    temperature: 0.5,
+    max_tokens: 150,
+    top_p: 1.0,
+    frequency_penalty: 0.0,
+    presence_penalty: 0.0,
+    stop: ["{}"],
+  });
+  const question2 = {
+    question: question2Result.data.choices[0].text
+  };
+  questions.push(question2);
+  answers.push(question2Result.data.choices[0].text.split("\n")[1]);
+
+  // Use GPT-3 to generate the third question and answer
+  const question3Prompt = `Generate a ${style} ${subject} question for a ${qualificationLevel} ${examBoard} exam on the topic of ${topic}. {}`;
+  const question3Result = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `\n\nQ: ${question1Prompt}\nA:`,
+    temperature: 0.5,
+    max_tokens: 150,
+    top_p: 1.0,
+    frequency_penalty: 0.0,
+    presence_penalty: 0.0,
+    stop: ["{}"],
+  });
+  const question3 = {
+    question: question3Result.data.choices[0].text
+  };
+  questions.push(question3);
+  answers.push(question3Result.data.choices[0].text.split("\n")[1]);
+
+  // Use GPT-3 to generate the fourth question and answer
+  const question4Prompt = `Generate a ${style} ${subject} question for a ${qualificationLevel} ${examBoard} exam on the topic of ${topic}. {}`;
+  const question4Result = await openai.createCompletion({
+    model: "text-davinci-003",
+    prompt: `\n\nQ: ${question1Prompt}\nA:`,
+    temperature: 0.5,
+    max_tokens: 150,
+    top_p: 1.0,
+    frequency_penalty: 0.0,
+    presence_penalty: 0.0,
+    stop: ["{}"],
+  });
+  const question4 = {
+    question: question4Result.data.choices[0].text
+  };
+  questions.push(question4);
+  answers.push(question4Result.data.choices[0].text.split("\n")[1]);
+
+  //  Use GPT-3 to generate the fifth question and answer
+   const question5Prompt = `Generate a ${style} ${subject} question for a ${qualificationLevel} ${examBoard} exam on the topic of ${topic}.`;
+   const question5Result = await openai.createCompletion({
+    model: "text-davinci-003",
+     prompt: `\n\nQ: ${question1Prompt}\nA:`,
+     temperature: 0.5,
+  max_tokens: 150,
+  top_p: 1.0,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+  stop: ["{}"],
+   }).then((res) => {console.log(res.data.choices[0].text)})
+  // export const askOpen Ai = async () => {
+  //   const prompt = `input: What is human life expectancy in the United States?
+  //   output:`
+  //   const response = await openai.createCompletion("text-davinci-001", {
+  //       prompt: prompt,
+  //       temperature: 0,
+  //       max_tokens: 100,
+  //       top_p: 1,
+  //       frequency_penalty: 0,
+  //       presence_penalty: 0,
+  //       stop: ["input:"],
+  //   });
+  //   return response.data;
+  //   }
+
+  //  const question5 = {
+  //    question: question5Result.data.choices[0].text
+  //  };
+  //  questions.push(question5);
+  //  answers.push(question5Result.data.choices[0].text.split("\n")[1]);
+
+  //  return questions 
+  console.log(`questions and answers are: ${question5Result }`)
+
+  };
 
 app.use((req, res, next) => {
   res.status(400).render('pages/404');
