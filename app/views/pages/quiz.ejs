@@ -11,8 +11,15 @@
 
 <main>
   <div class="jumbotron">
-    <h1>This is great</h1>
-    <p>Welcome to templating using EJS</p>
+    <h1>Generated Test</h1>
+    <% test.forEach(function(question) { %>
+      <p><%= question.question %></p>
+      <ul>
+        <% question.answers.forEach(function(answer) { %>
+          <li><%= answer %></li>
+        <% }); %>
+      </ul>
+    <% }); %>
   </div>
 </main>
 
