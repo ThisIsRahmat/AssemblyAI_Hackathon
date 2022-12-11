@@ -54,7 +54,13 @@ app.post('/generate-test', (req, res) => {
 
   const questions = generateQuestions(subject,  examBoard, qualification, style, topic);
 
-  res.render('pages/quiz', {questions});
+  console.log(questions)
+  res.render('pages/quiz', { questions: questions});
+  setTimeout(function() {
+    
+  }, 10000); // wait 10 seconds before rendering the page
+  // 
+ 
 });
 
 async function generateQuestions(subject, examBoard, qualificationLevel, style, topic) {
@@ -68,82 +74,79 @@ async function generateQuestions(subject, examBoard, qualificationLevel, style, 
 
   // Generate the questions and answers using GPT-3
   const questions = [];
-  const answers = [];
+  // const answers = [];
 
   // Use GPT-3 to generate the first question and answer
   const question1Prompt = `Generate a ${style} ${subject} question for a ${qualificationLevel} ${examBoard} exam on the topic of ${topic}. {}`;
-  const question1Result = await openai.createCompletion({
+  const question1Result =await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: `\n\nQ: ${question1Prompt}\nA:`,
-    model: "text-davinci-003",
-    temperature: 0.5,
-    max_tokens: 150,
-    top_p: 1.0,
-    frequency_penalty: 0.0,
-    presence_penalty: 0.0,
-    stop: ["{}"],
-
-
+     prompt: `\n\nQ: ${question1Prompt}\nA:`,
+     temperature: 0.5,
+  max_tokens: 150,
+  top_p: 1.0,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+  stop: ["{}"],
+   }).then((res) => {
+    // Return the generated question and answer from the callback function
+    return res.data.choices[0].text;
   });
-  const question1 = {
-    question: question1Result.data.choices[0].text
-  };
-  questions.push(question1);
-  answers.push(question1Result.data.choices[0].text.split("\n")[1]);
+  questions.push(question1Result);
+  // answers.push(question1Result.data.choices[0].text.split("\n")[1]);
 
   // Use GPT-3 to generate the second question and answer
   const question2Prompt = `Generate a ${style} ${subject} question for a ${qualificationLevel} ${examBoard} exam on the topic of ${topic}. {}`;
   const question2Result = await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: `\n\nQ: ${question1Prompt}\nA:`,
-    temperature: 0.5,
-    max_tokens: 150,
-    top_p: 1.0,
-    frequency_penalty: 0.0,
-    presence_penalty: 0.0,
-    stop: ["{}"],
+     prompt: `\n\nQ: ${question1Prompt}\nA:`,
+     temperature: 0.5,
+  max_tokens: 150,
+  top_p: 1.0,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+  stop: ["{}"],
+   }).then((res) => {
+    // Return the generated question and answer from the callback function
+    return res.data.choices[0].text;
   });
-  const question2 = {
-    question: question2Result.data.choices[0].text
-  };
-  questions.push(question2);
-  answers.push(question2Result.data.choices[0].text.split("\n")[1]);
+  questions.push(question2Result);
+  // answers.push(question2Result.data.choices[0].text.split("\n")[1]);
 
   // Use GPT-3 to generate the third question and answer
   const question3Prompt = `Generate a ${style} ${subject} question for a ${qualificationLevel} ${examBoard} exam on the topic of ${topic}. {}`;
   const question3Result = await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: `\n\nQ: ${question1Prompt}\nA:`,
-    temperature: 0.5,
-    max_tokens: 150,
-    top_p: 1.0,
-    frequency_penalty: 0.0,
-    presence_penalty: 0.0,
-    stop: ["{}"],
+     prompt: `\n\nQ: ${question1Prompt}\nA:`,
+     temperature: 0.5,
+  max_tokens: 150,
+  top_p: 1.0,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+  stop: ["{}"],
+   }).then((res) => {
+    // Return the generated question and answer from the callback function
+    return res.data.choices[0].text;
   });
-  const question3 = {
-    question: question3Result.data.choices[0].text
-  };
-  questions.push(question3);
-  answers.push(question3Result.data.choices[0].text.split("\n")[1]);
+  questions.push(question3Result);
+  // answers.push(question3Result.data.choices[0].text.split("\n")[1]);
 
   // Use GPT-3 to generate the fourth question and answer
   const question4Prompt = `Generate a ${style} ${subject} question for a ${qualificationLevel} ${examBoard} exam on the topic of ${topic}. {}`;
-  const question4Result = await openai.createCompletion({
+  const question4Result =await openai.createCompletion({
     model: "text-davinci-003",
-    prompt: `\n\nQ: ${question1Prompt}\nA:`,
-    temperature: 0.5,
-    max_tokens: 150,
-    top_p: 1.0,
-    frequency_penalty: 0.0,
-    presence_penalty: 0.0,
-    stop: ["{}"],
+     prompt: `\n\nQ: ${question1Prompt}\nA:`,
+     temperature: 0.5,
+  max_tokens: 150,
+  top_p: 1.0,
+  frequency_penalty: 0.0,
+  presence_penalty: 0.0,
+  stop: ["{}"],
+   }).then((res) => {
+    // Return the generated question and answer from the callback function
+    return res.data.choices[0].text;
   });
-  const question4 = {
-    question: question4Result.data.choices[0].text
-  };
-  questions.push(question4);
-  answers.push(question4Result.data.choices[0].text.split("\n")[1]);
+  questions.push(question4Result);
+  // answers.push(question4Result.data.choices[0].text.split("\n")[1]);
 
   //  Use GPT-3 to generate the fifth question and answer
    const question5Prompt = `Generate a ${style} ${subject} question for a ${qualificationLevel} ${examBoard} exam on the topic of ${topic}.`;
@@ -156,30 +159,15 @@ async function generateQuestions(subject, examBoard, qualificationLevel, style, 
   frequency_penalty: 0.0,
   presence_penalty: 0.0,
   stop: ["{}"],
-   }).then((res) => {console.log(res.data.choices[0].text)})
-  // export const askOpen Ai = async () => {
-  //   const prompt = `input: What is human life expectancy in the United States?
-  //   output:`
-  //   const response = await openai.createCompletion("text-davinci-001", {
-  //       prompt: prompt,
-  //       temperature: 0,
-  //       max_tokens: 100,
-  //       top_p: 1,
-  //       frequency_penalty: 0,
-  //       presence_penalty: 0,
-  //       stop: ["input:"],
-  //   });
-  //   return response.data;
-  //   }
+   }).then((res) => {
+    // Return the generated question and answer from the callback function
+    return res.data.choices[0].text;
+  });
+  questions.push(question5Result);
 
-  //  const question5 = {
-  //    question: question5Result.data.choices[0].text
-  //  };
-  //  questions.push(question5);
-  //  answers.push(question5Result.data.choices[0].text.split("\n")[1]);
-
-  //  return questions 
-  console.log(`questions and answers are: ${question5Result }`)
+  console.log(questions)
+  return{
+    questions: questions }
 
   };
 
