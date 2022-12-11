@@ -15,7 +15,7 @@
     <form action="/generate-test" method="post" class="mx-auto max-w-md m-4 p-4 bg-white rounded-lg shadow-md" >
 
       <div class="mb-4"> 
-      <label for="style"  class="block font-bold mb-2 text-gray-700">Question Style:</label><br>
+      <label for="style"  class="block font-bold mb-2 text-gray-700">Question Style: *</label><br>
       <select id="style" name="style"  class="block w-full p-2 rounded-lg bg-gray-100">
         <option value="multiple choice">Multiple Choice</option>
         <option value="fill-in-the-blank">Fill-in-the-Blank</option>
@@ -23,10 +23,10 @@
         <option value="short answer">Short Answer</option>
       </select><br>
       <label for="subject" class="block font-bold mb-2 text-gray-700">Subject:</label><br>
-      <input type="text" id="subject" name="subject" class="block w-full p-2 rounded-lg bg-gray-100"><br>
+      <input type="text" id="subject" name="subject" class="block w-full p-2 rounded-lg bg-gray-100" required="required"><br>
       <label for="topic" class="block font-bold mb-2 text-gray-700">Topic</label><br>
       <input type="text" id="topic" name="topic" class="block w-full p-2 rounded-lg bg-gray-100"> <br>
-      <label for="examBoard" class="block font-bold mb-2 text-gray-700">Exam Board:</label><br>
+      <label for="examBoard" class="block font-bold mb-2 text-gray-700" required="required">Exam Board:</label><br>
       <select id="exam_board" name="examBoard"  class="block w-full p-2 rounded-lg bg-gray-100">
         <option value="AQA">AQA</option>
         <option value="AQA">Edexcel</option>
@@ -34,11 +34,11 @@
         <option value="WJEC">WJEC</option>
       </select><br><br>
       <label for="qualification" class="block font-bold mb-2 text-gray-700">Qualification Level:</label><br>
-      <select id="qualification" name="qualification"  class="block w-full p-2 rounded-lg bg-gray-100">
+      <select id="qualification" name="qualification"  class="block w-full p-2 rounded-lg bg-gray-100" required="required"> 
         <option value="A-Level">A-Level</option>
         <option value="GCSE">GCSE</option>
       </select><br><br>
-      <input type="submit" value="Generate Test Material" class="bg-blue-500 text-white px-4 py-2 rounded-lg w-full">
+      <input type="submit" value="Generate Quiz Material" class="bg-blue-500 text-white px-4 py-2 rounded-lg w-full">
     </div>
     </form> 
   </div>
